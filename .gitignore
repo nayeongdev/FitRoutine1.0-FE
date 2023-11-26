@@ -1,0 +1,4 @@
+### Sass ###
+scss/
+*.css.map
+*.scss.map
