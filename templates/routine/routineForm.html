@@ -35,7 +35,7 @@
           <h2>MENU</h2>
           <ul class="gnb-list">
             <li>
-              <a href="#">&gt; <span>로그인</span></a>을 해주세요
+              <a href="../account/login.html">&gt; <span>로그인</span></a>을 해주세요
             </li>
             <li>
               <a href="./maker/">
@@ -54,7 +54,7 @@
               </a>
             </li>
             <li>
-              <a href="./chat.html">
+              <a href="./routine/index.html">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="33" viewBox="0 0 32 33" fill="none">
                   <path
                     d="M4.8 32.5C3.92 32.5 3.16667 32.1867 2.54 31.56C1.91333 30.9333 1.6 30.18 1.6 29.3V11.26C1.12 10.9667 0.733333 10.5867 0.44 10.12C0.146667 9.65333 0 9.11333 0 8.5V3.7C0 2.82 0.313333 2.06667 0.94 1.44C1.56667 0.813333 2.32 0.5 3.2 0.5H28.8C29.68 0.5 30.4333 0.813333 31.06 1.44C31.6867 2.06667 32 2.82 32 3.7V8.5C32 9.11333 31.8533 9.65333 31.56 10.12C31.2667 10.5867 30.88 10.9667 30.4 11.26V29.3C30.4 30.18 30.0867 30.9333 29.46 31.56C28.8333 32.1867 28.08 32.5 27.2 32.5H4.8ZM3.2 8.5H28.8V3.7H3.2V8.5ZM12.8 19.7H19.2C19.6533 19.7 20.0333 19.5467 20.34 19.24C20.6467 18.9333 20.8 18.5533 20.8 18.1C20.8 17.6467 20.6467 17.2667 20.34 16.96C20.0333 16.6533 19.6533 16.5 19.2 16.5H12.8C12.3467 16.5 11.9667 16.6533 11.66 16.96C11.3533 17.2667 11.2 17.6467 11.2 18.1C11.2 18.5533 11.3533 18.9333 11.66 19.24C11.9667 19.5467 12.3467 19.7 12.8 19.7Z"
@@ -77,14 +77,14 @@
       <section class="container" id="edit">
         <form class="col-container" action="" method="post">
           <ul class="update-btns">
-            <li class="delete-btn"><a href="#">
+            <li class="delete-btn"><a href="#" onclick="history.back(); return false;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                   <path
                     d="M5 18V16H12.1C13.15 16 14.0625 15.6667 14.8375 15C15.6125 14.3333 16 13.5 16 12.5C16 11.5 15.6125 10.6667 14.8375 10C14.0625 9.33333 13.15 9 12.1 9H5.8L8.4 11.6L7 13L2 8L7 3L8.4 4.4L5.8 7H12.1C13.7167 7 15.1042 7.525 16.2625 8.575C17.4208 9.625 18 10.9333 18 12.5C18 14.0667 17.4208 15.375 16.2625 16.425C15.1042 17.475 13.7167 18 12.1 18H5Z"
                     fill="#006B5A" />
                 </svg>수정 취소
               </a></li>
-            <li class="edit-btn"><a href="#">
+            <li class="edit-btn"><a href="#" onclick="routineEdit(1); return false;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                   <path d="M4.06721 18.9979C3.75577 19.072 3.4851 18.9942 3.25522 18.7643C3.02534 18.5344 2.94748 18.2637 3.02164 17.9523L3.80026 14.1704L7.84909 18.2192L4.06721 18.9979ZM9.2951 17.1292L4.89033 12.7244L14.0781 3.53666C14.4192 3.19555 14.8419 3.02499 15.3461 3.02499C15.8504 3.02499 16.273 3.19555 16.6141 3.53666L18.4828 5.40535C18.824 5.74646 18.9945 6.16914 18.9945 6.67339C18.9945 7.17764 18.824 7.60032 18.4828 7.94143L9.2951 17.1292Z"
                     fill="#006B5A" />
@@ -92,12 +92,12 @@
               </a></li>
           </ul>
           <div class="col-8-container">
-            <label for="title-input">루틴 제목</label>
-            <input type="text" id="title-input" required>
+            <label for="routine_title">루틴 제목</label>
+            <input type="text" id="routine_title" required>
           </div>
           <div class="col-8-container">
-            <label for="routine-content">루틴 내용</label>
-            <textarea name="routine-content" id="routine-content" cols="30" rows="10" required></textarea>
+            <label for="routine_content">루틴 내용</label>
+            <textarea name="routine-content" id="routine_content" cols="30" rows="10" required></textarea>
           </div>
         </form>
       </section>
@@ -139,6 +139,6 @@
     </footer>
   </div>
 </body>
-<script src="../../js/maker/app.js"></script>
-
+<script src="../../js/routine/routineForm.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 </html>

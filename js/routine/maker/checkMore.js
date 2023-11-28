@@ -57,7 +57,7 @@ function App() {
 
         localStorage.setItem("result", JSON.stringify(content));
 
-        location.href = "../result.html";
+        location.href = "./result.html";
       });
   }
 
