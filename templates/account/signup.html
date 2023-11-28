@@ -35,7 +35,12 @@
           <h2>MENU</h2>
           <ul class="gnb-list">
             <li>
-              <a href="./login.html">&gt; <span>로그인</span></a>을 해주세요
+              <div id="logged-out">
+                <a href="./login.html">&gt; <span>로그인</span></a>을 해주세요
+              </div>
+              <div id="logged-in" style="display:none;">
+                <a href="#" onclick="logoutUser(); return false;">&gt; <span>로그아웃</span></a>
+              </div>
             </li>
             <li>
               <a href="../routine/maker/">

@@ -45,3 +45,28 @@ function App() {
 }
 
 App();
+
+function logoutUser() {
+  try {
+    localStorage.removeItem('tokens');
+    location.reload()
+  } catch (error) {
+    console.error('Logout error:', error.message);
+  }
+}
+
+function updateUI() {
+  const hasTokens = localStorage.getItem('tokens');
+  if (hasTokens) {
+    document.getElementById('logged-in').style.display = 'block';
+    document.getElementById('logged-out').style.display = 'none';
+  } else {
+    document.getElementById('logged-in').style.display = 'none';
+    document.getElementById('logged-out').style.display = 'block';
+  }
+}
+
+// 페이지 로드 시 UI 업데이트
+window.addEventListener('DOMContentLoaded', function () {
+  updateUI();
+});
