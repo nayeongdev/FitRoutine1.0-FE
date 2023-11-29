@@ -1,72 +1,63 @@
-const $ = (selector) => document.querySelector(selector);
+BASE_URL = "http://127.0.0.1:8000/maker"
 
-// 메뉴 버튼
-//열기
-$(".menu-open-btn").addEventListener('click', () => {
-  document.body.classList.add("non-scroll");
-  $(".gnb").classList.add("opened");
-  $(".menu-close-btn").classList.add("opened");
-  $("#backdrop").style.display = 'block';
-  document.body.classList.add("non-scroll");
+function routineCreate(data) {
+  const token = JSON.parse(localStorage.getItem("tokens")).access;
+
+  fetch(`${BASE_URL}/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(data),
+    redirect: 'follow'
+  })
+    .then(response => response.json())
+    .then(data => {
+      let content = data;
+      localStorage.setItem("result", JSON.stringify(content));
+
+      location.href = "./result.html";
+    });
+}
+
+const backButton = $('#back-btn');
+const nextButton = $('#next-btn');
+const prevButton = $('#prev-btn');
+const submitButton = $('#submit-btn');
+
+backButton.addEventListener('click', function (e) {
+  e.preventDefault();
+  window.history.back();
 });
-//닫기
-$('.menu-close-btn').addEventListener('click', () => {
-  $("#backdrop").style.display = 'none';
-  $(".gnb").classList.remove("opened");
-  $(".menu-close-btn").classList.remove("opened");
-  document.body.classList.remove("non-scroll");
+
+nextButton.addEventListener('click', function (e) {
+  e.preventDefault();
+  userCheck.style.display = 'none';
+  userCheckMore.style.display = 'block';
 });
 
-const userData = {};
+prevButton.addEventListener('click', function (e) {
+  e.preventDefault();
+  userCheck.style.display = 'block';
+  userCheckMore.style.display = 'none';
+});
 
-function App() {
-  $('#personal-info-btn').addEventListener('click', e => {
-    e.preventDefault();
-    const goal = $('#user-goal');
-    const age = $('#user-age');
-    const gender = $('input[name ="user-gender"]:checked');
-    const height = $('#user-height');
-    const weight = $('#user-weight');
+submitButton.addEventListener('click', function (e) {
+  e.preventDefault();
+  const goal = $('#user-goal').value;
+  const level = $('#user-level').value;
+  const place = $('#user-place').value;
+  const preferredActivity = $('input[name ="user-preferred-activity"]:checked').value;
+  const exerciseTime = $('#user-exercise-time').value;
 
-    userData.goal = goal.value;
-    userData.age = age.value + "살";
-    userData.gender = gender.value;
-    userData.height = height.value + "cm";
-    userData.weight = weight.value + "kg";
+  const userData = {};
 
-    localStorage.setItem("user", JSON.stringify(userData));
+  userData.goal = goal;
+  userData.level = level;
+  userData.exercise_place = place;
+  userData.preferred_exercise = preferredActivity;
+  userData.exercise_duration = exerciseTime;
 
-    location.href = './checkMore.html';
-  });
-
-  $('.prev-btn').addEventListener('click', () => {
-    history.back();
-  });
-}
-
-App();
-
-function logoutUser() {
-  try {
-    localStorage.removeItem('tokens');
-    location.reload()
-  } catch (error) {
-    console.error('Logout error:', error.message);
-  }
-}
-
-function updateUI() {
-  const hasTokens = localStorage.getItem('tokens');
-  if (hasTokens) {
-    document.getElementById('logged-in').style.display = 'block';
-    document.getElementById('logged-out').style.display = 'none';
-  } else {
-    document.getElementById('logged-in').style.display = 'none';
-    document.getElementById('logged-out').style.display = 'block';
-  }
-}
-
-// 페이지 로드 시 UI 업데이트
-window.addEventListener('DOMContentLoaded', function () {
-  updateUI();
+  routineCreate(userData);
 });

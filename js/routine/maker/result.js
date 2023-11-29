@@ -17,7 +17,7 @@ $('.menu-close-btn').addEventListener('click', () => {
   document.body.classList.remove("non-scroll");
 });
 
-let content = JSON.parse(localStorage.getItem("result"));
+let content = JSON.parse(localStorage.getItem("result")).chat_gpt_response;
 
 $('.answer').innerHTML = `<pre>${content}</pre>`;
 
