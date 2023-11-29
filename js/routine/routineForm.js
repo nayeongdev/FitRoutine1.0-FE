@@ -1,43 +1,56 @@
-const $ = (selector) => document.querySelector(selector);
+BASE_URL = "http://127.0.0.1:8000/routines"
 
-// 메뉴 버튼
-//열기
-$(".menu-open-btn").addEventListener('click', () => {
-  document.body.classList.add("non-scroll");
-  $(".gnb").classList.add("opened");
-  $(".menu-close-btn").classList.add("opened");
-  $("#backdrop").style.display = 'block';
-  document.body.classList.add("non-scroll");
-});
-//닫기
-$('.menu-close-btn').addEventListener('click', () => {
-  $("#backdrop").style.display = 'none';
-  $(".gnb").classList.remove("opened");
-  $(".menu-close-btn").classList.remove("opened");
-  document.body.classList.remove("non-scroll");
-});
-
-function logoutUser() {
-  try {
-    localStorage.removeItem('tokens');
-    location.reload()
-  } catch (error) {
-    console.error('Logout error:', error.message);
-  }
+//확인 알럿
+function okAlert(msg) {
+  Swal.fire(msg)
 }
 
-function updateUI() {
-  const hasTokens = localStorage.getItem('tokens');
-  if (hasTokens) {
-    document.getElementById('logged-in').style.display = 'block';
-    document.getElementById('logged-out').style.display = 'none';
-  } else {
-    document.getElementById('logged-in').style.display = 'none';
-    document.getElementById('logged-out').style.display = 'block';
-  }
+// 완료 알럿
+function checkedAlert(msg) {
+  Swal.fire({
+    // position: 'top-end',
+    icon: 'success',
+    title: msg,
+    showConfirmButton: false,
+    timer: 1500
+  })
 }
 
-// 페이지 로드 시 UI 업데이트
-window.addEventListener('DOMContentLoaded', function () {
-  updateUI();
-});
+// 루틴 수정
+function routineEdit(routineId) {
+  let title = document.getElementById('routine_title').value;
+  let content = document.getElementById('routine_content').value;
+
+  let alertMsg = "";
+  if (title.length === 0) {
+    alertMsg = '루틴 제목을 입력해 주세요!';
+    okAlert(alertMsg);
+    return;
+  }
+  if (content.length === 0) {
+    alertMsg = '루틴 내용을 입력해 주세요!';
+    okAlert(alertMsg);
+    return;
+  }
+
+  const token = JSON.parse(localStorage.getItem("tokens")).access;
+  fetch(`${BASE_URL}/${routineId}/`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ title, content })
+  })
+    .then(response => response.json())
+    .then(data => {
+      checkedAlert(data.msg);
+      setTimeout(() => window.location.reload(), 1500);
+      window.location.replace(`http://127.0.0.1:5500/templates/routine/index.html`)
+    })
+    .catch(error => {
+      console.error('Error modifying routine:', error);
+      alertMsg = '내용을 수정하지 못했어요😱';
+      okAlert(alertMsg);
+    });
+}
