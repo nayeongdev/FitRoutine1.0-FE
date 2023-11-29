@@ -753,12 +753,8 @@ body {
   text-decoration: none;
   color: inherit;
 }
-#main-container .routine-list li div {
+#main-container .routine-list li .ta-l {
   text-align: left;
-}
-#main-container .routine-list li div:first-child {
-  font-size: 1.2rem;
-  padding-bottom: 1rem;
 }
 #main-container .update-btns {
   display: flex;

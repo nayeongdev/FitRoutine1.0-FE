@@ -1,43 +1,61 @@
-const $ = (selector) => document.querySelector(selector);
-
-// 메뉴 버튼
-//열기
-$(".menu-open-btn").addEventListener('click', () => {
-  document.body.classList.add("non-scroll");
-  $(".gnb").classList.add("opened");
-  $(".menu-close-btn").classList.add("opened");
-  $("#backdrop").style.display = 'block';
-  document.body.classList.add("non-scroll");
-});
-//닫기
-$('.menu-close-btn').addEventListener('click', () => {
-  $("#backdrop").style.display = 'none';
-  $(".gnb").classList.remove("opened");
-  $(".menu-close-btn").classList.remove("opened");
-  document.body.classList.remove("non-scroll");
-});
-
-function logoutUser() {
-  try {
-    localStorage.removeItem('tokens');
-    location.reload()
-  } catch (error) {
-    console.error('Logout error:', error.message);
-  }
+window.onload = function () {
+  routineList()
 }
 
-function updateUI() {
-  const hasTokens = localStorage.getItem('tokens');
-  if (hasTokens) {
-    document.getElementById('logged-in').style.display = 'block';
-    document.getElementById('logged-out').style.display = 'none';
-  } else {
-    document.getElementById('logged-in').style.display = 'none';
-    document.getElementById('logged-out').style.display = 'block';
-  }
+BASE_URL = "http://127.0.0.1:8000/routines"
+
+// 루틴 레더링
+function renderRoutine(routines) {
+  console.log(routines);
+  const routineList = $('.routine-list');
+
+  routines.forEach(routine => {
+    const originalDate = new Date(routine.created_at);
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = new Intl.DateTimeFormat('ko-KR', options).format(originalDate);
+
+    const listElement = document.createElement('li');
+    listElement.classList.add('col-8-container');
+
+    const anchorElement = document.createElement('a');
+    anchorElement.href = '#';
+    anchorElement.onclick = function () {
+      routineDetail(routine.id);
+      return false;
+    };
+
+    const titleElement = document.createElement('h3');
+    titleElement.classList.add('ta-l');
+    titleElement.textContent = routine.title;
+
+    const contentElement = document.createElement('p');
+    contentElement.classList.add('ta-l');
+    contentElement.textContent = formattedDate;
+
+    anchorElement.appendChild(titleElement)
+    anchorElement.appendChild(contentElement)
+
+    listElement.appendChild(anchorElement);
+    routineList.appendChild(listElement);
+  });
 }
 
-// 페이지 로드 시 UI 업데이트
-window.addEventListener('DOMContentLoaded', function () {
-  updateUI();
-});
+// 루틴 리스트
+function routineList() {
+  const token = JSON.parse(localStorage.getItem("tokens")).access;
+  fetch(`${BASE_URL}/`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Received data:', data);
+      renderRoutine(data)
+    })
+    .catch(error => {
+      console.error('Error getting routine:', error);
+    });
+}
