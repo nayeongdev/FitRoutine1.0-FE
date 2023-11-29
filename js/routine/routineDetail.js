@@ -1,43 +1,45 @@
-const $ = (selector) => document.querySelector(selector);
+BASE_URL = "http://127.0.0.1:8000/routines"
 
-// 메뉴 버튼
-//열기
-$(".menu-open-btn").addEventListener('click', () => {
-  document.body.classList.add("non-scroll");
-  $(".gnb").classList.add("opened");
-  $(".menu-close-btn").classList.add("opened");
-  $("#backdrop").style.display = 'block';
-  document.body.classList.add("non-scroll");
-});
-//닫기
-$('.menu-close-btn').addEventListener('click', () => {
-  $("#backdrop").style.display = 'none';
-  $(".gnb").classList.remove("opened");
-  $(".menu-close-btn").classList.remove("opened");
-  document.body.classList.remove("non-scroll");
-});
-
-function logoutUser() {
-  try {
-    localStorage.removeItem('tokens');
-    location.reload()
-  } catch (error) {
-    console.error('Logout error:', error.message);
-  }
+// 완료 알럿
+function checkedAlert(msg) {
+  Swal.fire({
+    icon: 'success',
+    title: msg,
+    showConfirmButton: false,
+    timer: 1500
+  })
 }
 
-function updateUI() {
-  const hasTokens = localStorage.getItem('tokens');
-  if (hasTokens) {
-    document.getElementById('logged-in').style.display = 'block';
-    document.getElementById('logged-out').style.display = 'none';
-  } else {
-    document.getElementById('logged-in').style.display = 'none';
-    document.getElementById('logged-out').style.display = 'block';
-  }
-}
+// 루틴 삭제
+function routineDelete(routineId) {
+  Swal.fire({
+    title: '정말 삭제 하시겠습니까?',
+    text: "삭제하면 복구할 수 없습니다",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#BA1A1A',
+    cancelButtonColor: '#D9D9D9',
+    confirmButtonText: '삭제',
+    cancelButtonText: '취소'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const token = JSON.parse(localStorage.getItem("tokens")).access;
 
-// 페이지 로드 시 UI 업데이트
-window.addEventListener('DOMContentLoaded', function () {
-  updateUI();
-});
+      fetch(`${BASE_URL}/${routineId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+      })
+        .then(response => response.json())
+        .then(data => {
+          checkedAlert(data.msg);
+          setTimeout(() => window.location.reload(), 1500);
+        })
+        .catch(error => {
+          console.error('Error deleting routine:', error);
+        });
+    }
+  })
+}
