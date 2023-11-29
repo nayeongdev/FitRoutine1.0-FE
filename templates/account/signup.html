@@ -86,53 +86,53 @@
         </div>
         <form class="col-container" action="" method="post">
           <div class="col-8-container">
-            <label for="email-input">이메일</label>
-            <input type="email" name="email-input" id="email-input" required>
+            <label for="userEmail">이메일</label>
+            <input type="email" name="user-email" id="userEmail" required>
           </div>
           <div class="col-8-container">
-            <label for="pwd-input">패스워드</label>
-            <input type="password" name="pwd-input" id="pwd-input" required>
+            <label for="userPwd">패스워드</label>
+            <input type="password" name="user-pwd" id="userPwd" required>
           </div>
           <div class="col-8-container">
-            <label for="pwd2-input">패스워드 재확인</label>
-            <input type="password" name="pwd2-input" id="pwd2-input" required>
+            <label for="userPwd2">패스워드 재확인</label>
+            <input type="password" name="user-pwd2" id="userPwd2" required>
           </div>
           <div class="col-8-container">
-            <label for="username-input">닉네임</label>
-            <input type="text" id="username-input" required>
+            <label for="username">닉네임</label>
+            <input type="text" id="username" required>
           </div>
           <div class="col-8-container">
-            <label for="birthday-input">생년월일</label>
-            <input type="date" name="birthday-input" id="birthday-input" min="1930-01-01" max="2023-12-31">
+            <label for="userBirthday">생년월일</label>
+            <input type="date" name="user-birthday" id="userBirthday" min="1930-01-01" max="2023-12-31">
           </div>
           <div class="col-8-container">
             <span>성별</span>
             <div class="choice-radio">
               <div class="radio-btn">
-                <input type="radio" name="user-gender" id="male-user" value="남자">
-                <label for="male-user">남자</label>
+                <input type="radio" name="user-gender" id="maleUser" value="남자">
+                <label for="maleUser">남자</label>
               </div>
               <div class="radio-btn">
-                <input type="radio" name="user-gender" id="female-user" value="여자">
-                <label for="female-user">여자</label>
+                <input type="radio" name="user-gender" id="femaleUser" value="여자">
+                <label for="femaleUser">여자</label>
               </div>
               <div class="radio-btn">
-                <input type="radio" name="user-gender" id="none-user" value="" checked>
-                <label for="none-user">설정 안함</label>
+                <input type="radio" name="user-gender" id="noneUser" value="" checked>
+                <label for="noneUser">설정 안함</label>
               </div>
             </div>
           </div>
           <div class="row-container">
             <div class="col-8-container">
-              <label for="user-height">키(cm)</label>
-              <input type="number" id="user-height" min="80" max="300" step="10" value="150">
+              <label for="userHeight">키(cm)</label>
+              <input type="number" id="userHeight" min="80" max="300" step="10">
             </div>
             <div class="col-8-container">
-              <label for="user-weight">몸무게(kg)</label>
-              <input type="number" id="user-weight" min="10" max="200" step="10" value="50">
+              <label for="userWeight">몸무게(kg)</label>
+              <input type="number" id="userWeight" min="10" max="200" step="10">
             </div>
           </div>
-          <button type="submit" class="primary-button" id="signup-btn">회원 가입하기</button>
+          <button type="submit" class="primary-button" id="signupBtn">회원 가입하기</button>
         </form>
       </section>
     </main>
@@ -173,6 +173,7 @@
     </footer>
   </div>
 </body>
+<script src="../../js/app.js"></script>
 <script src="../../js/account/signup.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 </html>
