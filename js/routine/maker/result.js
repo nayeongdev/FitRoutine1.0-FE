@@ -1,53 +1,61 @@
-const $ = (selector) => document.querySelector(selector);
+//확인 알럿
+function okAlert(msg) {
+  Swal.fire(msg)
+}
 
-// 메뉴 버튼
-//열기
-$(".menu-open-btn").addEventListener('click', () => {
-  document.body.classList.add("non-scroll");
-  $(".gnb").classList.add("opened");
-  $(".menu-close-btn").classList.add("opened");
-  $("#backdrop").style.display = 'block';
-  document.body.classList.add("non-scroll");
-});
-//닫기
-$('.menu-close-btn').addEventListener('click', () => {
-  $("#backdrop").style.display = 'none';
-  $(".gnb").classList.remove("opened");
-  $(".menu-close-btn").classList.remove("opened");
-  document.body.classList.remove("non-scroll");
-});
+// 완료 알럿
+function checkedAlert(msg) {
+  Swal.fire({
+    // position: 'top-end',
+    icon: 'success',
+    title: msg,
+    showConfirmButton: false,
+    timer: 1500
+  })
+}
+
+const today = new Date();
+const formattedDate = today.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+const title = `${formattedDate} 루틴`;
 
 let content = JSON.parse(localStorage.getItem("result")).chat_gpt_response;
-
 $('.answer').innerHTML = `<pre>${content}</pre>`;
 
-const goChatBtn = $('#go-chat-btn');
 
-goChatBtn.addEventListener('click', () => {
-  location.href = '../chat.html';
+BASE_URL = "http://127.0.0.1:8000"
+
+const saveBtn = $('#routine-save-btn');
+
+saveBtn.addEventListener('click', () => {
+  const token = JSON.parse(localStorage.getItem("tokens")).access;
+
+  fetch(`${BASE_URL}/maker/`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  })
+    .then(response => response.json())
+    .then(data => {
+      const exerciserId = data[data.length - 1].id;
+      return fetch(`${BASE_URL}/routines/?exerciser_id=${exerciserId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ title, content }),
+        redirect: 'follow'
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      checkedAlert(data.msg);
+      setTimeout(() => location.href = "../index.html", 1500);
+    }).catch(error => {
+      console.error('Error posting routine:', error);
+      alertMsg = '내용을 저장하지 못했어요😱';
+      okAlert(alertMsg);
+    });
 })
-
-function logoutUser() {
-  try {
-    localStorage.removeItem('tokens');
-    location.reload()
-  } catch (error) {
-    console.error('Logout error:', error.message);
-  }
-}
-
-function updateUI() {
-  const hasTokens = localStorage.getItem('tokens');
-  if (hasTokens) {
-    document.getElementById('logged-in').style.display = 'block';
-    document.getElementById('logged-out').style.display = 'none';
-  } else {
-    document.getElementById('logged-in').style.display = 'none';
-    document.getElementById('logged-out').style.display = 'block';
-  }
-}
-
-// 페이지 로드 시 UI 업데이트
-window.addEventListener('DOMContentLoaded', function () {
-  updateUI();
-});
